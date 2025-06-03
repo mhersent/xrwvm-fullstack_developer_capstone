@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.timezone import now
+# from django.utils.timezone import now
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -8,11 +8,13 @@ class CarMake(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return self.name 
+        return self.name
 
 
 class CarModel(models.Model):
-    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)  # Many-to-One relationship
+    car_make = models.ForeignKey(
+        CarMake,on_delete=models.CASCADE
+    )  # Many-to-One relationship
     name = models.CharField(max_length=100)
     dealer_id = models.IntegerField()
     CAR_TYPES = [
@@ -29,9 +31,11 @@ class CarModel(models.Model):
     type = models.CharField(max_length=10, choices=CAR_TYPES, default='SUV')
     MOTOR_TYPES = [
         ('INLINE', 'Inline'),
-        ('V-TYPE','V-Type'),
+        ('V-TYPE', 'V-Type'),
     ]
-    motor_type = models.CharField(max_length=10, choices=MOTOR_TYPES, default='INLINE')
+    motor_type = models.CharField(
+        max_length=10, choices=MOTOR_TYPES, default='INLINE'
+    )
 
     def __str__(self):
         return self.name
