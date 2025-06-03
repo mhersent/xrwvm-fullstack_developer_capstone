@@ -1,9 +1,4 @@
-# from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-# from django.shortcuts import render, redirect
-# from django.contrib.auth import logout
-# from django.contrib import messages
-# from datetime import datetime
 
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
@@ -12,7 +7,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import CarMake, CarModel
 from .populate import initiate
-from .restapis import get_request, analyze_review_sentiments, post_review
+from .restapis import get_request, analyze_review_sentiments
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -57,7 +52,7 @@ def registration(request):
         # Check if user already exists
         User.objects.get(username=username)
         username_exist = True
-    except Exception as err:
+    except Exception:
         # If not, simply log this is a new user
         logger.debug("{} is new user".format(username))
 
@@ -127,10 +122,9 @@ def get_dealer_details(request, dealer_id):
 
 def add_review(request):
     if (request.user.is_anonymous is False):
-        data = json.loads(request.body)
         try:
             return JsonResponse({"status": 200})
-        except Exception as err:
+        except Exception:
             return JsonResponse(
                 {"status": 401, "message": "Error in posting review"}
             )
